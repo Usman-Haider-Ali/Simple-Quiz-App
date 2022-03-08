@@ -1,3 +1,4 @@
+import 'package:first_practice_app/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -12,9 +13,9 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
+  var _questionIndex = 0;
 
-  var questionList = [
+  final _questionList = [
     "What is your favrite color?",
     "What is your favorite animal?",
     "What is your favorite sport?"
@@ -22,7 +23,9 @@ class MyAppState extends State<MyApp> {
 
   void answerQuestion() {
     setState(() {
-      questionIndex++;
+      if (_questionIndex + 1 < _questionList.length) {
+        _questionIndex++;
+      }
     });
   }
 
@@ -38,12 +41,11 @@ class MyAppState extends State<MyApp> {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                Text(
-                  questionList[questionIndex],
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
-                  ),
+                QuestionWidget(
+                  _questionList[_questionIndex],
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 ElevatedButton(
                   onPressed: answerQuestion,
