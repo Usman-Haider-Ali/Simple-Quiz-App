@@ -1,3 +1,4 @@
+import 'package:first_practice_app/widgets/button_widget.dart';
 import 'package:first_practice_app/widgets/question_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -16,12 +17,21 @@ class MyAppState extends State<MyApp> {
   var _questionIndex = 0;
 
   final _questionList = [
-    "What is your favrite color?",
-    "What is your favorite animal?",
-    "What is your favorite sport?"
+    {
+      'questionText': 'What is your favrite color?',
+      'answers': ['Black ', 'Red', 'White', 'Green'],
+    },
+    {
+      'questionText': 'What is your favorite animal?',
+      'answers': ['Camel', 'Lion', 'Tiger'],
+    },
+    {
+      'questionText': 'What is your favorite sport?',
+      'answers': ['Cricket ', 'Football', 'Hockey', 'Tenis'],
+    },
   ];
 
-  void answerQuestion() {
+  void _answerQuestion() {
     setState(() {
       if (_questionIndex + 1 < _questionList.length) {
         _questionIndex++;
@@ -34,36 +44,26 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text("First Practice App"),
+          title: const Text('First Practice App'),
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                QuestionWidget(
-                  _questionList[_questionIndex],
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ElevatedButton(
-                  onPressed: answerQuestion,
-                  child: const Text("Answer One"),
-                ),
-                ElevatedButton(
-                  onPressed: answerQuestion,
-                  child: const Text("Answer Two"),
-                ),
-                ElevatedButton(
-                  onPressed: answerQuestion,
-                  child: const Text("Answer Three"),
-                ),
-                ElevatedButton(
-                  onPressed: answerQuestion,
-                  child: const Text("Answer Four"),
-                ),
-              ],
+        body: SingleChildScrollView(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  QuestionWidget(
+                    _questionList[_questionIndex]['questionText'],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  ...(_questionList[_questionIndex]['answers'] as List<String>)
+                      .map((answers) {
+                    return AnswerButton(_answerQuestion, answers);
+                  }),
+                ],
+              ),
             ),
           ),
         ),
