@@ -33,9 +33,7 @@ class MyAppState extends State<MyApp> {
 
   void _answerQuestion() {
     setState(() {
-      if (_questionIndex + 1 < _questionList.length) {
-        _questionIndex++;
-      }
+      _questionIndex++;
     });
   }
 
@@ -47,24 +45,33 @@ class MyAppState extends State<MyApp> {
           title: const Text('First Practice App'),
         ),
         body: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  QuestionWidget(
-                    _questionList[_questionIndex]['questionText'],
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: (_questionIndex < _questionList.length)
+                ? Column(
+                    children: [
+                      QuestionWidget(
+                        _questionList[_questionIndex]['questionText'],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      ...(_questionList[_questionIndex]['answers']
+                              as List<String>)
+                          .map((answers) {
+                        return AnswerButton(_answerQuestion, answers);
+                      }),
+                    ],
+                  )
+                : const Center(
+                    child: Text(
+                      'You did it',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ...(_questionList[_questionIndex]['answers'] as List<String>)
-                      .map((answers) {
-                    return AnswerButton(_answerQuestion, answers);
-                  }),
-                ],
-              ),
-            ),
           ),
         ),
       ),
