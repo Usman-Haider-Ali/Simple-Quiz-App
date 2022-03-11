@@ -1,5 +1,6 @@
 import 'package:first_practice_app/widgets/button_widget.dart';
 import 'package:first_practice_app/widgets/question_widget.dart';
+import 'package:first_practice_app/widgets/result_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
@@ -15,25 +16,48 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   var _questionIndex = 0;
+  int _totalScore = 0;
 
   final _questionList = [
     {
       'questionText': 'What is your favrite color?',
-      'answers': ['Black ', 'Red', 'White', 'Green'],
+      'answers': [
+        {'text': 'Black ', 'score': 10},
+        {'text': 'Green ', 'score': 20},
+        {'text': 'Red ', 'score': 15},
+        {'text': 'White ', 'score': 5},
+      ],
     },
     {
       'questionText': 'What is your favorite animal?',
-      'answers': ['Camel', 'Lion', 'Tiger'],
+      'answers': [
+        {'text': 'Lion ', 'score': 10},
+        {'text': 'Tiger ', 'score': 20},
+        {'text': 'Horse ', 'score': 15},
+      ],
     },
     {
       'questionText': 'What is your favorite sport?',
-      'answers': ['Cricket ', 'Football', 'Hockey', 'Tenis'],
+      'answers': [
+        {'text': 'Hockey ', 'score': 10},
+        {'text': 'Cricket ', 'score': 20},
+        {'text': 'Football ', 'score': 15},
+        {'text': 'Tenis ', 'score': 5},
+      ],
     },
   ];
 
-  void _answerQuestion() {
+  void _answerQuestion(int score) {
+    _totalScore += score;
     setState(() {
       _questionIndex++;
+    });
+  }
+
+  void _restartQuiz() {
+    setState(() {
+      _totalScore = 0;
+      _questionIndex = 0;
     });
   }
 
@@ -56,22 +80,15 @@ class MyAppState extends State<MyApp> {
                       const SizedBox(
                         height: 10,
                       ),
-                      ...(_questionList[_questionIndex]['answers']
-                              as List<String>)
+                      ...(_questionList[_questionIndex]['answers'] as List<Map>)
                           .map((answers) {
-                        return AnswerButton(_answerQuestion, answers);
+                        return AnswerButton(
+                            () => _answerQuestion(answers['score']),
+                            answers['text']);
                       }),
                     ],
                   )
-                : const Center(
-                    child: Text(
-                      'You did it',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
+                : ResultWidget(_totalScore.toString(), _restartQuiz),
           ),
         ),
       ),
