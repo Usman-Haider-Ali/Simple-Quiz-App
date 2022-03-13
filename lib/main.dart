@@ -1,6 +1,6 @@
-import 'package:first_practice_app/widgets/button_widget.dart';
-import 'package:first_practice_app/widgets/question_widget.dart';
-import 'package:first_practice_app/widgets/result_widget.dart';
+import 'package:quiz_app/widgets/button_widget.dart';
+import 'package:quiz_app/widgets/question_widget.dart';
+import 'package:quiz_app/widgets/result_widget.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const MyApp());
